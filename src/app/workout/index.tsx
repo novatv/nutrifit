@@ -15,9 +15,11 @@ import {
   Skeleton,
   Text,
 } from '@/components/ui';
+import { ExerciseVisual } from '@/components/exercise/exercise-visual';
 import { useWorkoutSession } from '@/features/workout/use-workout-session';
 import { t } from '@/i18n';
 import { useTheme } from '@/providers';
+import { isDemoMode } from '@/services/supabase';
 import { minTouchTarget, screenPadding } from '@/theme';
 import type { SetLog } from '@/types/domain';
 
@@ -178,19 +180,23 @@ export default function WorkoutScreen() {
         contentContainerStyle={{ paddingHorizontal: screenPadding, paddingBottom: 140 }}
         keyboardShouldPersistTaps="handled"
       >
-        {s.offlineSaved ? (
+        {/* En modo demo no hay servidor con el que sincronizar: el aviso mentiría. */}
+        {!isDemoMode && s.offlineSaved ? (
           <Card style={{ marginBottom: spacing.lg, borderColor: colors.warning }}>
             <Text variant="caption">{t('workout.offlineSaved')}</Text>
           </Card>
         ) : null}
 
-        <Text variant="h1" style={{ marginBottom: spacing.xs }}>
-          {s.exerciseName}
-        </Text>
-        <Text variant="label" color="muted">
-          {t('workout.target')}: {exercise.sets} × {exercise.repMin}–{exercise.repMax} · RIR{' '}
-          {exercise.targetRir}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.lg }}>
+          <ExerciseVisual slug={exercise.exerciseSlug} size={72} />
+          <View style={{ flex: 1, gap: spacing.xs }}>
+            <Text variant="h1">{s.exerciseName}</Text>
+            <Text variant="label" color="muted">
+              {t('workout.target')}: {exercise.sets} × {exercise.repMin}–{exercise.repMax} · RIR{' '}
+              {exercise.targetRir}
+            </Text>
+          </View>
+        </View>
 
         {s.lastTimeSets.length > 0 ? (
           <Section title={t('workout.lastTime')}>

@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { View } from 'react-native';
 
+import { Logo } from '@/components/brand/logo';
 import {
   Button,
   Card,
@@ -45,6 +46,7 @@ export default function TodayScreen() {
   return (
     <Screen>
       <View style={{ paddingTop: spacing.lg, gap: spacing.xs }}>
+        <Logo size="sm" style={{ marginBottom: spacing.sm }} />
         <Text variant="h1">{t(greetingKey(hour), { name: demoUser.displayName })}</Text>
         <Text variant="label" color="muted">
           {t('today.weekDay', { week: demoUser.weekNumber, day: demoUser.dayNumber })}
