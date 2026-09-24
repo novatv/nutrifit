@@ -21,6 +21,7 @@ export const es = {
     day: 'Día',
     of: 'de',
     optional: 'opcional',
+    minutes: '{{n}} min',
     why: '¿Por qué?',
   },
 

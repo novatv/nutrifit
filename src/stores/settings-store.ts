@@ -74,6 +74,27 @@ const INITIAL = {
   reminders: { ...defaultReminderPreferences },
 };
 
+/* ---------------------------------------------------------- almacenamiento */
+
+/**
+ * Almacenamiento tolerante al render en servidor.
+ *
+ * Para web, Expo Router renderiza primero en Node, donde no existe `window`.
+ * AsyncStorage lo toca al escribir, así que sin esta guarda el proceso muere
+ * con "window is not defined" antes de pintar nada. En ese entorno no hay
+ * nada que persistir: se devuelve un almacén vacío y la app arranca con los
+ * valores por defecto, que es justo lo que debe pasar en un render de servidor.
+ */
+const isBrowserLike = typeof window !== 'undefined';
+
+const noopStorage = {
+  getItem: async (): Promise<string | null> => null,
+  setItem: async (): Promise<void> => {},
+  removeItem: async (): Promise<void> => {},
+};
+
+const safeStorage = isBrowserLike ? AsyncStorage : noopStorage;
+
 /* ------------------------------------------------------------------ store */
 
 export const useSettingsStore = create<SettingsState>()(
@@ -134,7 +155,7 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: 'nutrifit.settings',
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => safeStorage),
       partialize: (state) => ({
         unitSystem: state.unitSystem,
         locale: state.locale,

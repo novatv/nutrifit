@@ -80,3 +80,30 @@ describe('claves usadas por el dominio', () => {
     expect(orphans).toEqual([]);
   });
 });
+
+describe('claves usadas por la interfaz', () => {
+  /** Recorre src/ buscando llamadas t('clave.literal'). */
+  const walk = (dir: string): string[] =>
+    fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) return walk(full);
+      return /\.tsx?$/.test(e.name) ? [full] : [];
+    });
+
+  it('toda clave literal pasada a t() existe en el diccionario', () => {
+    const SRC = path.join(__dirname, '..', '..', 'src');
+    const orphans: string[] = [];
+
+    for (const file of walk(SRC)) {
+      const src = fs.readFileSync(file, 'utf8');
+      // Solo literales: las claves compuestas con plantillas no se pueden
+      // verificar de forma estática y se quedan fuera a propósito.
+      for (const m of src.matchAll(/\bt\(\s*'([\w.]+)'/g)) {
+        const key = m[1];
+        if (!esKeys.has(key)) orphans.push(`${path.relative(SRC, file)}: ${key}`);
+      }
+    }
+
+    expect(orphans).toEqual([]);
+  });
+});

@@ -110,7 +110,7 @@ export default function TodayScreen() {
               <View style={{ gap: spacing.xs }}>
                 <Text variant="h3">{demoWorkout.name}</Text>
                 <Text variant="caption" color="muted">
-                  {t('minutes', { n: demoWorkout.estimatedMinutes })} ·{' '}
+                  {t('common.minutes', { n: demoWorkout.estimatedMinutes })} ·{' '}
                   {demoWorkout.exerciseCount} {t('workout.exercises').toLowerCase()}
                 </Text>
               </View>
@@ -129,7 +129,7 @@ export default function TodayScreen() {
           <Text variant="h3">{demoNextMeal.name}</Text>
           <Text variant="caption" color="muted">
             {demoNextMeal.kcal} kcal · {demoNextMeal.proteinG} g {t('today.protein').toLowerCase()} ·{' '}
-            {t('minutes', { n: demoNextMeal.prepMinutes })}
+            {t('common.minutes', { n: demoNextMeal.prepMinutes })}
           </Text>
           <Button
             label={t('log.addFood')}

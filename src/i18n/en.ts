@@ -34,6 +34,7 @@ const dictionary = {
     day: 'Day',
     of: 'of',
     optional: 'optional',
+    minutes: '{{n}} min',
     why: 'Why?',
   },
 
