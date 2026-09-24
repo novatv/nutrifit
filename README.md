@@ -1,56 +1,146 @@
-# Welcome to your Expo app 👋
+# NutriFit 12
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación móvil de nutrición y entrenamiento que genera un programa
+personalizado de 12 semanas: objetivos de calorías y macros, plan de comidas,
+lista de compra, entrenamientos con progresión y ajuste semanal según
+resultados.
 
-## Get started
+> Esta aplicación proporciona información general de nutrición y actividad
+> física y no sustituye el consejo de un profesional sanitario.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## Requisitos
 
-2. Start the app
+- Node 20 o superior (probado con 24)
+- npm 10 o superior
+- Para ejecutar en dispositivo: la app de **Expo Go**, o un *development build*
+  si añades módulos nativos
+- Opcional: cuenta de [Supabase](https://supabase.com) para el backend
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Instalación
 
 ```bash
-npm run reset-project
+npm install
+cp .env.example .env
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+La app **arranca sin configurar nada**: si no hay credenciales de Supabase
+entra en modo demostración con datos locales, y puedes ver el panel, el plan,
+los entrenamientos y el progreso.
 
-### Other setup steps
+## Variables de entorno
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Solo las variables con prefijo `EXPO_PUBLIC_` llegan al cliente. Cualquier
+secreto real vive exclusivamente en el servidor.
 
-## Learn more
+| Variable | ¿Va en el cliente? | Para qué |
+|---|---|---|
+| `EXPO_PUBLIC_SUPABASE_URL` | Sí | URL del proyecto |
+| `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Sí | Clave publicable; la protección real la da RLS |
+| `SUPABASE_SERVICE_ROLE_KEY` | **No, nunca** | Solo scripts y Edge Functions |
+| `USDA_API_KEY` | **No, nunca** | Se consume desde una Edge Function |
 
-To learn more about developing your project with Expo, look at the following resources:
+Poner un secreto con prefijo `EXPO_PUBLIC_` equivale a publicarlo: queda
+dentro del binario.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Supabase
 
-## Join the community
+```bash
+npx supabase start                       # entorno local
+npx supabase db reset                    # aplica migraciones + seed
+npx supabase db push                     # aplica migraciones a tu proyecto remoto
+```
 
-Join our community of developers creating universal apps.
+Las migraciones están en `supabase/migrations/` numeradas por orden. El
+esquema activa **Row Level Security en todas las tablas** y las políticas
+comprueban la propiedad subiendo por las claves foráneas, sin fiarse de ningún
+identificador que mande el cliente. `supabase/seed.sql` carga catálogo de
+ejercicios, alimentos y recetas de ejemplo; no crea usuarios.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Ejecutar
+
+```bash
+npm run start        # servidor de desarrollo
+npm run ios          # simulador de iOS
+npm run android      # emulador de Android
+npm run web          # navegador
+```
+
+## Calidad
+
+```bash
+npm run lint         # expo lint
+npm run typecheck    # tsc --noEmit
+npm run test         # jest
+npm run test:watch
+```
+
+## Arquitectura
+
+```
+src/
+  app/            rutas de expo-router (cada archivo es una pantalla)
+    (tabs)/       Hoy · Plan · Registrar · Progreso · Perfil
+    (auth)/       acceso y registro
+    (onboarding)/ alta en 16 pasos
+    workout/      sesión de entrenamiento en vivo
+  components/ui/  kit de componentes (Button, Card, ProgressRing…)
+  domain/         motores puros, sin React ni red
+    nutrition/    energía, macros, comidas, sustituciones, compra
+    training/     biblioteca, generador, progresión, descarga
+    safety/       cribado y guardarraíles
+  features/       lógica de pantalla por funcionalidad
+  i18n/           es (referencia, completo) y en
+  providers/      tema y cliente de datos
+  services/       supabase, configuración, registro de eventos
+  stores/         estado local (Zustand)
+  theme/          tokens de color, espaciado, radios, tipografía
+  types/          contrato de tipos del dominio
+supabase/
+  migrations/     esquema SQL versionado
+docs/             reglas de salud y modelo de datos
+tests/            unitarios de dominio y de pantallas
+```
+
+**Principio rector**: los cálculos viven en `src/domain/` como funciones puras
+y testeables. Las pantallas no calculan; solo muestran. Así las reglas de
+nutrición, progresión y seguridad se pueden probar sin montar React.
+
+### Diseño
+
+El color se reserva para los datos. Los macronutrientes llevan la paleta viva
+—proteína, carbohidratos, grasa y fibra tienen cada uno su tono— y el resto de
+la interfaz se mantiene neutra para no competir con ellos. Modo claro y oscuro
+salen de los mismos tokens.
+
+## Seguridad
+
+- **Row Level Security** activo en todas las tablas; un usuario solo ve lo suyo.
+- La app usa únicamente la clave publicable. La service-role nunca se empaqueta.
+- Las fotos de progreso van a almacenamiento **privado**, nunca a un bucket público.
+- El registro de eventos redacta tokens, contraseñas y emails antes de escribir.
+- Cribado de salud en el alta: menores de 18, embarazo o lactancia, trastorno
+  alimentario actual, pauta médica en curso y contraindicación de ejercicio
+  **no reciben un plan automático**, sino la recomendación de consultar con un
+  profesional.
+- Suelos de energía documentados en `src/domain/safety/`: si el objetivo que
+  pide el usuario exigiría bajar de ese suelo, no se aplica el recorte; se
+  alarga el plazo y se explica.
+
+Las reglas y sus fuentes están en [`docs/HEALTH_RULES.md`](docs/HEALTH_RULES.md),
+separadas en tres categorías: regla basada en evidencia, decisión de producto y
+guardarraíl de seguridad.
+
+## Limitaciones conocidas
+
+- La base de datos de alimentos usa una abstracción `FoodProvider`. El
+  proveedor USDA requiere clave y se consume desde el servidor; sin ella
+  funciona el catálogo local y los alimentos manuales.
+- El escáner de código de barras, Apple Health y Health Connect están detrás de
+  banderas de funcionalidad, con sus interfaces definidas pero desactivadas.
+- El *AI Coach* está previsto como capa de explicación, nunca como motor: las
+  calorías, los macros, la progresión y las reglas de seguridad son
+  deterministas y testeables, y seguirán siéndolo.
+- Las estimaciones energéticas son eso, estimaciones. La app no promete una
+  cantidad exacta de pérdida de peso ni presenta cifras como garantías.
