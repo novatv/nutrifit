@@ -297,6 +297,11 @@ const dictionary = {
   },
 
   workout: {
+    day: {
+      full_body_a: 'Full body A', full_body_b: 'Full body B', full_body_c: 'Full body C',
+      upper: 'Upper', lower: 'Lower', push: 'Push', pull: 'Pull', legs: 'Legs',
+    },
+    note: { deload_week: 'Deload week: less volume so you arrive fresh to the next one.' },
     exerciseOf: 'Exercise {{current}}/{{total}}',
     target: 'Target',
     lastTime: 'Last time',
@@ -325,6 +330,31 @@ const dictionary = {
     painFollowUp:
       'If the pain is sharp or persists, it should be assessed by a professional before you carry on progressing.',
     offlineSaved: "You're offline: we've saved your sets and will sync them later.",
+  },
+
+  progression: {
+    reason: {
+      no_history: 'First time with this exercise: start comfortable and log what you lift.',
+      top_of_range_increase: 'You finished every set at the top of the range. You can go up a little.',
+      add_reps_first: 'Before adding weight, gain reps within the range.',
+      missed_once_hold: 'You fell short once. Repeat the same weight before going up.',
+      repeated_misses_reduce: 'Several sessions short of the range. Drop the weight a bit and rebuild.',
+      pain_reported_hold: "You've reported discomfort, so we're not suggesting more load.",
+    },
+    pr: {
+      max_load: 'Heaviest yet',
+      max_reps_at_load: 'Most reps at that weight',
+      session_volume: 'Your biggest session volume',
+    },
+  },
+
+  training: {
+    progression: { increase: 'Increase', hold: 'Hold', deload: 'Deload' },
+    deload: { not_needed: 'No deload needed yet.' },
+    pain: {
+      consider_professional_review:
+        'If the pain is sharp or persists, have a professional look at it before progressing further.',
+    },
   },
 
   progress: {

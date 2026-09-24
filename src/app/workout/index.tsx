@@ -178,7 +178,7 @@ export default function WorkoutScreen() {
         contentContainerStyle={{ paddingHorizontal: screenPadding, paddingBottom: 140 }}
         keyboardShouldPersistTaps="handled"
       >
-        {s.restored || s.offlineSaved ? (
+        {s.offlineSaved ? (
           <Card style={{ marginBottom: spacing.lg, borderColor: colors.warning }}>
             <Text variant="caption">{t('workout.offlineSaved')}</Text>
           </Card>

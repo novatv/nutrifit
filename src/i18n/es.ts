@@ -284,6 +284,11 @@ export const es = {
   },
 
   workout: {
+    day: {
+      full_body_a: 'Cuerpo completo A', full_body_b: 'Cuerpo completo B', full_body_c: 'Cuerpo completo C',
+      upper: 'Tren superior', lower: 'Tren inferior', push: 'Empuje', pull: 'Tirón', legs: 'Pierna',
+    },
+    note: { deload_week: 'Semana de descarga: menos volumen para llegar fresco a la siguiente.' },
     exerciseOf: 'Ejercicio {{current}}/{{total}}',
     target: 'Objetivo',
     lastTime: 'Última vez',
@@ -312,6 +317,31 @@ export const es = {
     painFollowUp:
       'Si el dolor es agudo o persiste, conviene que lo valore un profesional antes de seguir progresando.',
     offlineSaved: 'Sin conexión: guardamos tus series y las sincronizamos luego.',
+  },
+
+  progression: {
+    reason: {
+      no_history: 'Primera vez con este ejercicio: empieza cómodo y anota lo que levantes.',
+      top_of_range_increase: 'Completaste todas las series arriba del rango. Puedes subir un poco.',
+      add_reps_first: 'Antes de subir peso, gana repeticiones dentro del rango.',
+      missed_once_hold: 'Se quedó corto una vez. Repite el mismo peso antes de subir.',
+      repeated_misses_reduce: 'Varias sesiones sin llegar al rango. Baja algo el peso y reconstruye.',
+      pain_reported_hold: 'Has indicado molestias, así que no proponemos subir carga.',
+    },
+    pr: {
+      max_load: 'Más peso que nunca',
+      max_reps_at_load: 'Más repeticiones con ese peso',
+      session_volume: 'Tu mayor volumen en una sesión',
+    },
+  },
+
+  training: {
+    progression: { increase: 'Subir', hold: 'Mantener', deload: 'Descargar' },
+    deload: { not_needed: 'No toca descarga todavía.' },
+    pain: {
+      consider_professional_review:
+        'Si el dolor es agudo o persiste, conviene que lo valore un profesional antes de seguir progresando.',
+    },
   },
 
   progress: {
