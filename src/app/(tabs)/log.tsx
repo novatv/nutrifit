@@ -149,7 +149,7 @@ function MealSection({
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
         {type === 'breakfast' ? (
           <Button
-            label={t('log.repeatYesterday')}
+            label={t('log.repeatYesterday', { meal: t(MEAL_TYPE_KEYS[type]).toLowerCase() })}
             variant="ghost"
             size="md"
             fullWidth={false}
