@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
+import { Logo } from '@/components/brand/logo';
 import { Button, Input, Screen, Text } from '@/components/ui';
 import { t } from '@/i18n';
 import { useAuth } from '@/providers/auth-provider';
@@ -43,6 +44,7 @@ export default function SignUpScreen() {
   return (
     <Screen>
       <View style={{ gap: spacing.xl, paddingTop: spacing['4xl'] }}>
+        <Logo size="lg" style={{ alignSelf: 'center' }} />
         <Text variant="h1">{t('auth.signUpTitle')}</Text>
 
         <View style={{ gap: spacing.lg }}>

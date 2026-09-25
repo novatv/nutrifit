@@ -11,7 +11,7 @@ export interface LogoProps {
   style?: ViewStyle;
 }
 
-const SIZES = { sm: 44, md: 64, lg: 160 } as const;
+const SIZES = { sm: 64, md: 96, lg: 200 } as const;
 
 /**
  * Logotipo oficial de YL Nutrición (assets/images/logo.png).
