@@ -31,6 +31,7 @@ function RootStack() {
         <Stack.Screen name="workout" options={{ presentation: 'fullScreenModal' }} />
         <Stack.Screen name="meal" options={{ presentation: 'modal' }} />
         <Stack.Screen name="checkin" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="privacidad" />
       </Stack>
     </>
   );

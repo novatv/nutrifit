@@ -2673,6 +2673,7 @@ const dictionary = {
   },
 
   settings: {
+    privacyPolicy: 'Read the privacy policy',
     resetData: 'Reset data',
     resetDataConfirm:
       'Your food logs, measurements, photos, workouts and watch data will be deleted from this device. Language and unit settings are kept. This cannot be undone.',

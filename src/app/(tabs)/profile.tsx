@@ -186,6 +186,7 @@ export default function ProfileScreen() {
       <Section title={t('settings.privacy')}>
         <Card style={{ gap: spacing.md }}>
           <Text variant="body">{t('settings.privacyBody')}</Text>
+          <Button label={t('settings.privacyPolicy')} variant="ghost" onPress={() => router.push('/privacidad')} />
           <Button label={t('settings.viewData')} variant="secondary" onPress={viewData} />
           <Button label={t('settings.exportData')} variant="secondary" onPress={() => void exportLocalData()} />
           <Button label={t('settings.resetData')} variant="danger" onPress={() => void confirmReset()} />

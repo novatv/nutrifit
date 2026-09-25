@@ -2660,6 +2660,7 @@ export const es = {
   },
 
   settings: {
+    privacyPolicy: 'Leer la política de privacidad',
     resetData: 'Restablecer datos',
     resetDataConfirm:
       'Se borrarán de este dispositivo tus registros de comida, medidas, fotos, entrenamientos y datos del reloj. Los ajustes de idioma y unidades se conservan. No se puede deshacer.',

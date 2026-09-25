@@ -11,7 +11,9 @@
       "icon": "./assets/images/icon.png",
       "infoPlist": {
         "NSMotionUsageDescription": "YL Nutrición cuenta tus pasos para ajustar tu plan de actividad."
-      }
+      },
+      "bundleIdentifier": "es.ylnutricion.app",
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
@@ -30,7 +32,8 @@
         "android.permission.health.READ_STEPS",
         "android.permission.health.READ_WEIGHT"
       ],
-      "package": "com.anonymous.nutrifit"
+      "package": "es.ylnutricion.app",
+      "versionCode": 2
     },
     "web": {
       "output": "static",
@@ -65,7 +68,8 @@
             "minSdkVersion": 26
           }
         }
-      ]
+      ],
+      "./plugins/with-release-signing.js"
     ],
     "experiments": {
       "typedRoutes": true,
