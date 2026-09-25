@@ -939,6 +939,8 @@ export function mediaFor(slug: string): ExerciseMedia | undefined {
 
 /** Texto de atribución listo para pintar bajo una imagen. */
 export function attributionFor(media: ExerciseMedia): string {
+  // Las ilustraciones propias no llevan licencia de terceros ni origen externo.
+  if (media.license === 'own') return `© ${media.author || 'YL Nutrición'}`;
   const author = media.author ? `${media.author} · ` : '';
   return `${author}${media.license} · wger.de`;
 }
