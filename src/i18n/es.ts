@@ -40,6 +40,8 @@ export const es = {
   },
 
   auth: {
+    demoMode:
+      'Modo demostración: no hay servidor conectado, así que la cuenta vive solo en este dispositivo y no se pueden enviar correos de recuperación. Cuando se conecte el servidor, el registro y la recuperación serán reales.',
     signInTitle: 'Bienvenido de nuevo',
     signUpTitle: 'Crea tu cuenta',
     email: 'Email',
@@ -2658,6 +2660,12 @@ export const es = {
   },
 
   settings: {
+    resetData: 'Restablecer datos',
+    resetDataConfirm:
+      'Se borrarán de este dispositivo tus registros de comida, medidas, fotos, entrenamientos y datos del reloj. Los ajustes de idioma y unidades se conservan. No se puede deshacer.',
+    resetDone: 'Datos restablecidos.',
+    dataSummary:
+      'Guardado en este dispositivo: {{days}} días de registro de comida, {{checks}} registros de figura, {{photos}} fotos y {{health}} días del reloj.',
     health: 'Reloj y salud',
     title: 'Perfil',
     account: 'Cuenta',

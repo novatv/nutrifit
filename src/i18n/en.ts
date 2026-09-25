@@ -53,6 +53,8 @@ const dictionary = {
   },
 
   auth: {
+    demoMode:
+      'Demo mode: no server is connected, so the account lives only on this device and recovery emails cannot be sent. Once the server is connected, sign-up and recovery will be real.',
     signInTitle: 'Welcome back',
     signUpTitle: 'Create your account',
     email: 'Email',
@@ -2671,6 +2673,12 @@ const dictionary = {
   },
 
   settings: {
+    resetData: 'Reset data',
+    resetDataConfirm:
+      'Your food logs, measurements, photos, workouts and watch data will be deleted from this device. Language and unit settings are kept. This cannot be undone.',
+    resetDone: 'Data reset.',
+    dataSummary:
+      'Stored on this device: {{days}} days of food logs, {{checks}} body entries, {{photos}} photos and {{health}} days of watch data.',
     health: 'Watch & health',
     title: 'Profile',
     account: 'Account',

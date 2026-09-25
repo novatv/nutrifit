@@ -30,7 +30,8 @@
         "android.permission.health.READ_SLEEP",
         "android.permission.health.READ_STEPS",
         "android.permission.health.READ_WEIGHT"
-      ]
+      ],
+      "package": "com.anonymous.nutrifit"
     },
     "web": {
       "output": "static",

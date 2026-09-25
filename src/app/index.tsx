@@ -1,10 +1,19 @@
 import { Redirect } from 'expo-router';
 
+import { useAuth } from '@/providers/auth-provider';
+import { isDemoMode } from '@/services/supabase';
+
 /**
- * Punto de entrada. Cuando exista sesión real decidirá entre onboarding,
- * acceso y app; de momento entra directo al panel para poder verlo con los
- * datos de demostración.
+ * Punto de entrada.
+ *
+ * Con servidor configurado, sin sesión se va a la pantalla de acceso. En modo
+ * demostración (sin Supabase) se entra directo al panel: la cuenta local no
+ * sobrevive a un recargo y obligar a "registrarse" cada vez sería mentir.
  */
 export default function Index() {
-  return <Redirect href="/(tabs)" />;
+  const { initialized, isAuthenticated } = useAuth();
+
+  if (isDemoMode) return <Redirect href="/(tabs)" />;
+  if (!initialized) return null;
+  return <Redirect href={isAuthenticated ? '/(tabs)' : '/(auth)/sign-in'} />;
 }

@@ -17,6 +17,7 @@ import { t } from '@/i18n';
 import { useAuth } from '@/providers/auth-provider';
 import { useTheme } from '@/providers/theme-provider';
 import { resetPasswordSchema, type ResetPasswordValues } from '@/services/auth';
+import { isDemoMode } from '@/services/supabase';
 
 export default function ForgotPasswordScreen() {
   const { spacing } = useTheme();
@@ -42,6 +43,11 @@ export default function ForgotPasswordScreen() {
     <Screen>
       <View style={{ gap: spacing.xl, paddingTop: spacing['4xl'] }}>
         <Text variant="h1">{t('auth.forgot')}</Text>
+        {isDemoMode ? (
+          <Text variant="caption" color="muted">
+            {t('auth.demoMode')}
+          </Text>
+        ) : null}
 
         <Controller
           control={control}
