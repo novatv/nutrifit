@@ -12,6 +12,7 @@ import {
   StatCard,
   Text,
 } from '@/components/ui';
+import { summarizeHealth } from '@/domain/health/activityFromHealth';
 import { t } from '@/i18n';
 import { useTheme } from '@/providers';
 import {
@@ -23,6 +24,7 @@ import {
   demoWeeklyAdherence,
   demoWorkout,
 } from '@/services/demo-data';
+import { useHealthConnected, useHealthDays } from '@/stores/health-store';
 
 function greetingKey(hour: number): string {
   if (hour < 12) return 'today.greetingMorning';
@@ -42,6 +44,13 @@ export default function TodayScreen() {
   const hour = new Date().getHours();
 
   const kcalLeft = Math.max(0, demoTargets.kcal - demoConsumed.kcal);
+
+  // Con reloj conectado los pasos son reales; si no, los de demostración.
+  const healthConnected = useHealthConnected();
+  const healthDays = useHealthDays();
+  const stepsToday = healthConnected
+    ? summarizeHealth(healthDays, new Date().toISOString().slice(0, 10)).stepsToday
+    : demoActivity.steps;
 
   return (
     <Screen>
@@ -88,7 +97,7 @@ export default function TodayScreen() {
         <View style={{ flexDirection: 'row', gap: spacing.md }}>
           <StatCard
             label={t('today.steps')}
-            value={demoActivity.steps}
+            value={stepsToday}
             target={demoActivity.stepTarget}
           />
           <StatCard

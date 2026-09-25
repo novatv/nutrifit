@@ -44,8 +44,8 @@ export const config = {
 export const featureFlags = {
   AI_COACH: false,
   BARCODE_SCANNER: false,
-  HEALTHKIT: false,
-  HEALTH_CONNECT: false,
+  HEALTHKIT: true,
+  HEALTH_CONNECT: true,
   PREMIUM: false,
   SOCIAL: false,
 } as const;

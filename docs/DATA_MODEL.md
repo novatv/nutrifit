@@ -182,3 +182,20 @@ se derivan igual. Un bloque final `do $$ ... $$` hace fallar el seed si alguna
 receta se queda sin ingredientes, si sus macros no cuadran con la suma de estos
 (tolerancia de 0,2 kcal) o si no es compatible con ninguna dieta. Tanto las
 migraciones como el seed son idempotentes: volver a ejecutarlos no duplica nada.
+
+## Reloj y salud (Apple Health / Health Connect)
+
+La app **lee** (nunca escribe) pasos, energía activa, sueño, pulso en reposo,
+entrenamientos y peso del servicio de salud del teléfono. Cualquier reloj o
+pulsera que sincronice con Apple Health o Health Connect entra sin integración
+propia (Apple Watch, Garmin, Fitbit, Samsung, Xiaomi, Polar, Huawei…).
+
+- Código: `src/services/health/` (proveedores), `src/stores/health-store.ts`
+  (estado persistido en el dispositivo), `src/domain/health/activityFromHealth.ts`
+  (resumen determinista y sugerencia de nivel de actividad).
+- Los datos de salud se quedan en el dispositivo; no se suben a Supabase.
+- Requiere **build de desarrollo o producción** (`eas build`): en Expo Go y en
+  web los módulos nativos no existen y se cae al podómetro (iOS/Android) o a
+  nada (web). Permisos declarados en `app.json` (`ios.infoPlist`,
+  `android.permissions`, plugins `react-native-health`, `react-native-health-connect`,
+  `expo-build-properties` con `minSdkVersion 26`).

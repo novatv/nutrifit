@@ -2671,6 +2671,7 @@ const dictionary = {
   },
 
   settings: {
+    health: 'Watch & health',
     title: 'Profile',
     account: 'Account',
     units: 'Units',
@@ -2776,6 +2777,33 @@ const dictionary = {
     confidenceLow: 'Low confidence on this item: double-check it.',
     photoSaved: 'Photo saved.',
     addManually: 'Add manually',
+  },
+  health: {
+    intro:
+      'Connect your watch or band to bring in steps, workouts, sleep, resting heart rate and weight. Any brand that syncs with your phone\'s health app works: Apple Watch, Garmin, Fitbit, Samsung, Xiaomi, Polar, Huawei…',
+    hintIos: 'On iPhone we read from Apple Health. Make sure your watch writes its data there.',
+    hintAndroid: 'On Android we read from Health Connect. Install it and enable your watch as a source.',
+    hintWeb: 'The web version has no access to your watch. Use the app on your phone.',
+    connect: 'Connect watch',
+    disconnect: 'Disconnect',
+    syncNow: 'Sync now',
+    connectedTo: 'Connected to {{source}}',
+    lastSync: 'Last sync: {{when}}',
+    stepsToday: 'Steps today',
+    avgSteps: '7-day average',
+    avgSleep: 'Average sleep',
+    restingHr: 'Resting HR',
+    noDataYet: 'No data yet. If you just connected, tap sync again in a few minutes.',
+    unavailable: 'No health service is available on this device (it does not work in Expo Go or on the web; the installed app is required).',
+    denied: 'Read permission not granted. You can grant it in Settings → Health (iOS) or Health Connect (Android).',
+    error: 'Could not read from the health service. Please try again.',
+    readOnly: 'Read-only: the app never writes to your health history. Permissions are managed by the system.',
+    source: {
+      appleHealth: 'Apple Health',
+      healthConnect: 'Health Connect',
+      pedometer: 'phone pedometer',
+      none: 'no source',
+    },
   },
   states: {
     emptyTitle: 'Nothing here yet',

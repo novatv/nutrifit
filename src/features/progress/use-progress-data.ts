@@ -32,6 +32,8 @@ import {
   type DemoNutritionDay,
   type DemoStrengthSeries,
 } from '@/services/demo-data';
+import { toActivityDays } from '@/domain/health/activityFromHealth';
+import { useHealthDays } from '@/stores/health-store';
 import { averageAdherence, movingAverage, weightTrend, type WeightTrend } from '@/utils/trends';
 import { roundTo } from '@/utils/units';
 
@@ -291,9 +293,16 @@ export function useProgressData(): UseProgressDataResult {
     return 'success';
   }, [query.isPending, query.isError, query.data]);
 
+  // Con reloj conectado, la pestaña de actividad enseña los días reales.
+  const healthDays = useHealthDays();
+  const data = useMemo(() => {
+    if (!query.data || healthDays.length === 0) return query.data ?? null;
+    return { ...query.data, activity: summarizeActivity(toActivityDays(healthDays)) };
+  }, [query.data, healthDays]);
+
   return {
     status,
-    data: query.data ?? null,
+    data,
     error: query.error ?? null,
     retry: () => void query.refetch(),
     isRefetching: query.isRefetching,

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Switch, View } from 'react-native';
 
 import { Button, Card, Chip, Screen, Section, Text } from '@/components/ui';
+import { HealthSection } from '@/features/health/health-section';
 import { AVAILABLE_LOCALES, t } from '@/i18n';
 import { useTheme } from '@/providers';
 import { demoUser } from '@/services/demo-data';
@@ -137,6 +138,10 @@ export default function ProfileScreen() {
             />
           ))}
         </Card>
+      </Section>
+
+      <Section title={t('settings.health')}>
+        <HealthSection />
       </Section>
 
       <Section title={t('settings.privacy')}>

@@ -8,7 +8,10 @@
     "scheme": "nutrifit",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "infoPlist": {
+        "NSMotionUsageDescription": "YL Nutrición cuenta tus pasos para ajustar tu plan de actividad."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -17,7 +20,17 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.ACTIVITY_RECOGNITION",
+        "android.permission.health.READ_ACTIVE_CALORIES_BURNED",
+        "android.permission.health.READ_EXERCISE",
+        "android.permission.health.READ_HEART_RATE",
+        "android.permission.health.READ_RESTING_HEART_RATE",
+        "android.permission.health.READ_SLEEP",
+        "android.permission.health.READ_STEPS",
+        "android.permission.health.READ_WEIGHT"
+      ]
     },
     "web": {
       "output": "static",
@@ -33,7 +46,23 @@
           "imageWidth": 76
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "react-native-health",
+        {
+          "healthSharePermission": "YL Nutrición lee tus pasos, entrenamientos, sueño y peso de Apple Health para ajustar tu plan.",
+          "healthUpdatePermission": "YL Nutrición no escribe datos en Apple Health."
+        }
+      ],
+      "react-native-health-connect",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 26
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

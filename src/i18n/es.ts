@@ -2658,6 +2658,7 @@ export const es = {
   },
 
   settings: {
+    health: 'Reloj y salud',
     title: 'Perfil',
     account: 'Cuenta',
     units: 'Unidades',
@@ -2763,6 +2764,33 @@ export const es = {
     confidenceLow: 'Poca seguridad en este alimento: compruébalo.',
     photoSaved: 'Foto guardada.',
     addManually: 'Añadir a mano',
+  },
+  health: {
+    intro:
+      'Conecta tu reloj o pulsera para traer pasos, entrenamientos, sueño, pulso en reposo y peso. Vale cualquier marca que sincronice con la app de salud del teléfono: Apple Watch, Garmin, Fitbit, Samsung, Xiaomi, Polar, Huawei…',
+    hintIos: 'En iPhone se lee de Apple Health. Asegúrate de que tu reloj vuelca ahí sus datos.',
+    hintAndroid: 'En Android se lee de Health Connect. Instálalo y activa tu reloj como fuente.',
+    hintWeb: 'En la versión web no hay acceso al reloj. Usa la app en el móvil.',
+    connect: 'Conectar reloj',
+    disconnect: 'Desconectar',
+    syncNow: 'Sincronizar ahora',
+    connectedTo: 'Conectado a {{source}}',
+    lastSync: 'Última sincronización: {{when}}',
+    stepsToday: 'Pasos hoy',
+    avgSteps: 'Media 7 días',
+    avgSleep: 'Sueño medio',
+    restingHr: 'Pulso en reposo',
+    noDataYet: 'Aún no hay datos. Si acabas de conectar, dale a sincronizar en unos minutos.',
+    unavailable: 'No hay servicio de salud disponible en este dispositivo (en Expo Go y en web no funciona; hace falta la app instalada).',
+    denied: 'Sin permiso de lectura. Puedes darlo desde Ajustes → Salud (iOS) o Health Connect (Android).',
+    error: 'No se pudo leer del servicio de salud. Inténtalo de nuevo.',
+    readOnly: 'Solo lectura: la app nunca escribe en tu historial de salud. Los permisos se gestionan desde el sistema.',
+    source: {
+      appleHealth: 'Apple Health',
+      healthConnect: 'Health Connect',
+      pedometer: 'podómetro del teléfono',
+      none: 'ninguna fuente',
+    },
   },
   states: {
     emptyTitle: 'Todavía no hay nada aquí',
