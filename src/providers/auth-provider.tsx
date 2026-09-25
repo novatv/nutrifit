@@ -7,9 +7,9 @@
  */
 
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
-import { Alert } from 'react-native';
 
 import { t } from '@/i18n';
+import { confirmDialog } from '@/utils/dialog';
 import { onAuthStateChange, type AuthSession, type AuthUser } from '@/services/auth';
 import {
   selectIsAuthenticated,
@@ -83,24 +83,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signOut,
       resetPassword,
       clearError,
-      confirmDeleteAccount: () =>
-        new Promise<boolean>((resolve) => {
-          Alert.alert(
-            t('auth.deleteAccount'),
-            t('auth.deleteAccountWarning'),
-            [
-              { text: t('common.cancel'), style: 'cancel', onPress: () => resolve(false) },
-              {
-                text: t('common.delete'),
-                style: 'destructive',
-                onPress: () => {
-                  void deleteAccount({ confirmed: true }).then(resolve);
-                },
-              },
-            ],
-            { cancelable: true, onDismiss: () => resolve(false) },
-          );
-        }),
+      confirmDeleteAccount: async () => {
+        const ok = await confirmDialog({
+          title: t('auth.deleteAccount'),
+          message: t('auth.deleteAccountWarning'),
+          confirmLabel: t('common.delete'),
+          cancelLabel: t('common.cancel'),
+          destructive: true,
+        });
+        if (!ok) return false;
+        return deleteAccount({ confirmed: true });
+      },
     }),
     [
       session,

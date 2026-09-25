@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
-import { Alert, FlatList, Pressable, View } from 'react-native';
+import { FlatList, Pressable, View } from 'react-native';
 
 import { Button, Card, EmptyState, ProgressBar, Screen, Text } from '@/components/ui';
 import { t } from '@/i18n';
@@ -18,6 +18,7 @@ import {
 } from '@/stores/log-store';
 import { minTouchTarget } from '@/theme';
 import type { MealType, Nutrients } from '@/types/domain';
+import { chooseDialog } from '@/utils/dialog';
 
 /* ------------------------------------------------------------- utilidades */
 
@@ -234,17 +235,13 @@ export default function LogScreen() {
       // Copiar a otra comida del mismo día: se pregunta destino en lugar de
       // adivinarlo, porque duplicar calorías por error es caro de deshacer.
       const targets = MEAL_TYPES.filter((candidate) => candidate !== type);
-      Alert.alert(
-        t('log.copyMeal'),
-        t(MEAL_TYPE_KEYS[type]),
-        [
-          ...targets.map((target) => ({
-            text: t(MEAL_TYPE_KEYS[target]),
-            onPress: () => copyMeal(dateKey, type, target),
-          })),
-          { text: t('common.cancel'), style: 'cancel' as const },
-        ],
-      );
+      void chooseDialog(
+        `${t('log.copyMeal')} · ${t(MEAL_TYPE_KEYS[type])}`,
+        targets.map((target) => t(MEAL_TYPE_KEYS[target])),
+        t('common.cancel'),
+      ).then((index) => {
+        if (index !== null) copyMeal(dateKey, type, targets[index]);
+      });
     },
     [copyMeal, dateKey],
   );

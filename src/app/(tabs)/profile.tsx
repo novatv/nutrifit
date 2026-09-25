@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Switch, View } from 'react-native';
+import { Switch, View } from 'react-native';
 
 import { Button, Card, Chip, Screen, Section, Text } from '@/components/ui';
 import { HealthSection } from '@/features/health/health-section';
@@ -18,6 +18,7 @@ import {
   useSettingsStore,
 } from '@/stores/settings-store';
 import type { Locale, UnitSystem } from '@/types/domain';
+import { confirmDialog, notify } from '@/utils/dialog';
 
 const UNIT_LABEL: Record<UnitSystem, string> = {
   metric: 'settings.metric',
@@ -82,25 +83,24 @@ export default function ProfileScreen() {
 
   const viewData = () => {
     const d = summarizeLocalData();
-    Alert.alert(
+    notify(
       t('settings.viewData'),
       t('settings.dataSummary', { days: d.loggedDays, checks: d.bodyChecks, photos: d.photos, health: d.healthDays }),
     );
   };
 
-  const confirmReset = () => {
+  const confirmReset = async () => {
     // Borrar es definitivo: se pregunta siempre y se dice qué se pierde.
-    Alert.alert(t('settings.resetData'), t('settings.resetDataConfirm'), [
-      { text: t('common.cancel'), style: 'cancel' },
-      {
-        text: t('settings.resetData'),
-        style: 'destructive',
-        onPress: () => {
-          resetLocalData();
-          Alert.alert(t('settings.resetDone'));
-        },
-      },
-    ]);
+    const ok = await confirmDialog({
+      title: t('settings.resetData'),
+      message: t('settings.resetDataConfirm'),
+      confirmLabel: t('settings.resetData'),
+      cancelLabel: t('common.cancel'),
+      destructive: true,
+    });
+    if (!ok) return;
+    resetLocalData();
+    notify(t('settings.resetDone'));
   };
 
   const doSignOut = async () => {
@@ -188,7 +188,7 @@ export default function ProfileScreen() {
           <Text variant="body">{t('settings.privacyBody')}</Text>
           <Button label={t('settings.viewData')} variant="secondary" onPress={viewData} />
           <Button label={t('settings.exportData')} variant="secondary" onPress={() => void exportLocalData()} />
-          <Button label={t('settings.resetData')} variant="ghost" onPress={confirmReset} />
+          <Button label={t('settings.resetData')} variant="danger" onPress={() => void confirmReset()} />
         </Card>
       </Section>
 

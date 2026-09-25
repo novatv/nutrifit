@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useMemo, useState } from 'react';
-import { Alert, Linking, Pressable, View } from 'react-native';
+import { Linking, Pressable, View } from 'react-native';
 
 import { Button, Card, EmptyState, Input, Section, Text } from '@/components/ui';
 import {
@@ -20,6 +20,7 @@ import { useBodyChecks, useBodyStore } from '@/stores/body-store';
 import { toDateKey } from '@/stores/log-store';
 import { usePhotosOfKind, usePhotosStore } from '@/stores/photos-store';
 import { minTouchTarget } from '@/theme';
+import { confirmDialog } from '@/utils/dialog';
 import { safeNumber } from '@/utils/units';
 
 /* -------------------------------------------------------------- etiquetas */
@@ -253,12 +254,16 @@ function PhotoGrid() {
     return <EmptyState body={t('body.noPhotos')} />;
   }
 
-  const confirmDelete = (id: string) => {
+  const confirmDelete = async (id: string) => {
     // Borrar es definitivo (no hay papelera): se pregunta siempre.
-    Alert.alert(t('body.deletePhoto'), t('body.deletePhotoConfirm'), [
-      { text: t('common.cancel'), style: 'cancel' },
-      { text: t('common.delete'), style: 'destructive', onPress: () => void remove(id) },
-    ]);
+    const ok = await confirmDialog({
+      title: t('body.deletePhoto'),
+      message: t('body.deletePhotoConfirm'),
+      confirmLabel: t('common.delete'),
+      cancelLabel: t('common.cancel'),
+      destructive: true,
+    });
+    if (ok) await remove(id);
   };
 
   return (
@@ -272,7 +277,7 @@ function PhotoGrid() {
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={`${t('body.deletePhoto')}: ${p.takenAt.slice(0, 10)}`}
-              onLongPress={() => confirmDelete(p.id)}
+              onLongPress={() => void confirmDelete(p.id)}
               delayLongPress={400}
             >
               <Image
@@ -288,7 +293,7 @@ function PhotoGrid() {
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel={t('body.deletePhoto')}
-                onPress={() => confirmDelete(p.id)}
+                onPress={() => void confirmDelete(p.id)}
                 style={{ minWidth: minTouchTarget / 2, alignItems: 'flex-end' }}
               >
                 <Ionicons name="trash-outline" size={16} color={colors.danger} />
