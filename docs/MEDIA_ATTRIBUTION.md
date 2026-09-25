@@ -100,3 +100,79 @@ Licencias:
 Los siguientes slugs no tienen equivalente claro en wger (o wger no tiene imagen para él) y usan su pictograma:
 
 `dumbbell-squat`, `kettlebell-front-squat`, `bodyweight-squat`, `jump-squat`, `wall-sit`, `chair-squat`, `band-squat`, `trap-bar-deadlift`, `single-leg-rdl`, `single-leg-glute-bridge`, `good-morning`, `band-good-morning`, `cable-pull-through`, `knee-push-up`, `incline-push-up`, `cable-chest-press`, `band-chest-press`, `push-press`, `dumbbell-shoulder-press`, `arnold-press`, `kettlebell-overhead-press`, `landmine-press`, `band-overhead-press`, `pendlay-row`, `kettlebell-row`, `band-seated-row`, `neutral-grip-pull-up`, `negative-pull-up`, `band-assisted-pull-up`, `lat-pulldown-cable`, `lat-pulldown-machine`, `band-lat-pulldown`, `walking-lunge`, `split-squat`, `lateral-lunge`, `curtsy-lunge`, `dumbbell-step-up`, `farmers-carry-dumbbells`, `kettlebell-farmers-carry`, `suitcase-carry`, `overhead-carry-dumbbell`, `front-rack-carry-kettlebell`, `plate-carry`, `backpack-carry`, `side-plank`, `dead-bug`, `reverse-crunch`, `mountain-climber`, `plank-to-push-up`, `copenhagen-plank`, `pallof-press-band`, `cable-crunch`, `machine-ab-crunch`, `band-biceps-curl`, `band-triceps-pushdown`, `band-lateral-raise`, `prone-y-t-raise`, `nordic-hamstring-curl`, `dumbbell-calf-raise`, `hip-abduction-band`, `stationary-bike-intervals`, `treadmill-walk-incline`, `treadmill-run-intervals`, `rowing-machine-steady`, `rowing-machine-intervals`, `jump-rope`, `burpee`, `brisk-walk`, `stair-climb`
+
+## Ilustraciones propias (generadas)
+
+Generadas con MuAPI (modelo `seedream-5.0-pro`) a partir de un prompt propio, sin material de terceros. Licencia: propia de YL Nutrición. Estilo: figura dorada sobre verde de marca, sin rostro reconocible.
+
+| Slug | Archivo |
+|---|---|
+| arnold-press | assets/exercises/arnold-press.jpg |
+| backpack-carry | assets/exercises/backpack-carry.jpg |
+| band-assisted-pull-up | assets/exercises/band-assisted-pull-up.jpg |
+| band-biceps-curl | assets/exercises/band-biceps-curl.jpg |
+| band-chest-press | assets/exercises/band-chest-press.jpg |
+| band-good-morning | assets/exercises/band-good-morning.jpg |
+| band-lat-pulldown | assets/exercises/band-lat-pulldown.jpg |
+| band-lateral-raise | assets/exercises/band-lateral-raise.jpg |
+| band-overhead-press | assets/exercises/band-overhead-press.jpg |
+| band-seated-row | assets/exercises/band-seated-row.jpg |
+| band-squat | assets/exercises/band-squat.jpg |
+| band-triceps-pushdown | assets/exercises/band-triceps-pushdown.jpg |
+| bodyweight-squat | assets/exercises/bodyweight-squat.jpg |
+| brisk-walk | assets/exercises/brisk-walk.jpg |
+| burpee | assets/exercises/burpee.jpg |
+| cable-chest-press | assets/exercises/cable-chest-press.jpg |
+| cable-crunch | assets/exercises/cable-crunch.jpg |
+| cable-pull-through | assets/exercises/cable-pull-through.jpg |
+| chair-squat | assets/exercises/chair-squat.jpg |
+| copenhagen-plank | assets/exercises/copenhagen-plank.jpg |
+| curtsy-lunge | assets/exercises/curtsy-lunge.jpg |
+| dead-bug | assets/exercises/dead-bug.jpg |
+| dumbbell-calf-raise | assets/exercises/dumbbell-calf-raise.jpg |
+| dumbbell-shoulder-press | assets/exercises/dumbbell-shoulder-press.jpg |
+| dumbbell-squat | assets/exercises/dumbbell-squat.jpg |
+| dumbbell-step-up | assets/exercises/dumbbell-step-up.jpg |
+| farmers-carry-dumbbells | assets/exercises/farmers-carry-dumbbells.jpg |
+| front-rack-carry-kettlebell | assets/exercises/front-rack-carry-kettlebell.jpg |
+| good-morning | assets/exercises/good-morning.jpg |
+| hip-abduction-band | assets/exercises/hip-abduction-band.jpg |
+| incline-push-up | assets/exercises/incline-push-up.jpg |
+| jump-rope | assets/exercises/jump-rope.jpg |
+| jump-squat | assets/exercises/jump-squat.jpg |
+| kettlebell-farmers-carry | assets/exercises/kettlebell-farmers-carry.jpg |
+| kettlebell-front-squat | assets/exercises/kettlebell-front-squat.jpg |
+| kettlebell-overhead-press | assets/exercises/kettlebell-overhead-press.jpg |
+| kettlebell-row | assets/exercises/kettlebell-row.jpg |
+| knee-push-up | assets/exercises/knee-push-up.jpg |
+| landmine-press | assets/exercises/landmine-press.jpg |
+| lat-pulldown-cable | assets/exercises/lat-pulldown-cable.jpg |
+| lat-pulldown-machine | assets/exercises/lat-pulldown-machine.jpg |
+| lateral-lunge | assets/exercises/lateral-lunge.jpg |
+| machine-ab-crunch | assets/exercises/machine-ab-crunch.jpg |
+| mountain-climber | assets/exercises/mountain-climber.jpg |
+| negative-pull-up | assets/exercises/negative-pull-up.jpg |
+| neutral-grip-pull-up | assets/exercises/neutral-grip-pull-up.jpg |
+| nordic-hamstring-curl | assets/exercises/nordic-hamstring-curl.jpg |
+| overhead-carry-dumbbell | assets/exercises/overhead-carry-dumbbell.jpg |
+| pallof-press-band | assets/exercises/pallof-press-band.jpg |
+| pendlay-row | assets/exercises/pendlay-row.jpg |
+| plank-to-push-up | assets/exercises/plank-to-push-up.jpg |
+| plate-carry | assets/exercises/plate-carry.jpg |
+| prone-y-t-raise | assets/exercises/prone-y-t-raise.jpg |
+| push-press | assets/exercises/push-press.jpg |
+| reverse-crunch | assets/exercises/reverse-crunch.jpg |
+| rowing-machine-intervals | assets/exercises/rowing-machine-intervals.jpg |
+| rowing-machine-steady | assets/exercises/rowing-machine-steady.jpg |
+| side-plank | assets/exercises/side-plank.jpg |
+| single-leg-glute-bridge | assets/exercises/single-leg-glute-bridge.jpg |
+| single-leg-rdl | assets/exercises/single-leg-rdl.jpg |
+| split-squat | assets/exercises/split-squat.jpg |
+| stair-climb | assets/exercises/stair-climb.jpg |
+| stationary-bike-intervals | assets/exercises/stationary-bike-intervals.jpg |
+| suitcase-carry | assets/exercises/suitcase-carry.jpg |
+| trap-bar-deadlift | assets/exercises/trap-bar-deadlift.jpg |
+| treadmill-run-intervals | assets/exercises/treadmill-run-intervals.jpg |
+| treadmill-walk-incline | assets/exercises/treadmill-walk-incline.jpg |
+| walking-lunge | assets/exercises/walking-lunge.jpg |
+| wall-sit | assets/exercises/wall-sit.jpg |
