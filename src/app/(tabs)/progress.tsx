@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { LineChart, type SeriesMode } from '@/components/charts/line-chart';
+import { BodyTab } from '@/features/body/body-tab';
 import {
   Card,
   Chip,
@@ -291,6 +292,7 @@ const TAB_CONTENT: Record<ProgressTab, (data: ProgressData) => React.ReactNode> 
   general: (d) => <GeneralTab data={d} />,
   weight: (d) => <WeightTab data={d} />,
   measurements: (d) => <MeasurementsTab data={d} />,
+  body: () => <BodyTab />,
   strength: (d) => <StrengthTab data={d} />,
   nutrition: (d) => <NutritionTab data={d} />,
   activity: (d) => <ActivityTab data={d} />,

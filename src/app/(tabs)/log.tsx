@@ -303,12 +303,13 @@ export default function LogScreen() {
           icon={<Ionicons name="add" size={18} color={colors.onPrimary} />}
         />
         <Button
-          label={t('log.searchFood')}
+          label={t('log.scanPhoto')}
           variant="secondary"
           size="md"
           fullWidth={false}
           style={{ flex: 1 }}
-          onPress={() => openAdd('lunch')}
+          onPress={() => router.push({ pathname: '/meal/scan', params: { date: dateKey } })}
+          icon={<Ionicons name="camera-outline" size={18} color={colors.primary} />}
         />
       </View>
     </View>

@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+import { EXERCISES } from '@/domain/training/exerciseLibrary';
 import { en } from '@/i18n/en';
 import { es } from '@/i18n/es';
 
@@ -68,6 +69,27 @@ describe('claves usadas por el dominio', () => {
     expect(emitted.length).toBeGreaterThan(0);
     const orphans = emitted.filter((k) => !esKeys.has(k));
     expect(orphans).toEqual([]);
+  });
+
+  it('toda clave que genera la biblioteca de ejercicios tiene texto en ambos idiomas', () => {
+    const read = (obj: unknown, key: string): unknown =>
+      key.split('.').reduce<unknown>(
+        (acc, k) => (acc && typeof acc === 'object' ? (acc as Record<string, unknown>)[k] : undefined),
+        obj,
+      );
+    const generated = EXERCISES.flatMap((e) => [
+      `${e.nameKey}.name`,
+      ...e.instructionKeys,
+      ...e.commonMistakeKeys,
+      ...e.safetyNoteKeys,
+    ]);
+    expect(generated.length).toBeGreaterThan(0);
+    const empty = generated.filter((k) => {
+      const a = read(es, k);
+      const b = read(en, k);
+      return typeof a !== 'string' || a.trim() === '' || typeof b !== 'string' || b.trim() === '';
+    });
+    expect(empty).toEqual([]);
   });
 
   it('las claves de explicación del ajuste semanal existen', () => {

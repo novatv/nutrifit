@@ -12,11 +12,13 @@ import { z } from 'zod';
 const schema = z.object({
   supabaseUrl: z.string().url().optional(),
   supabasePublishableKey: z.string().min(10).optional(),
+  supplementsUrl: z.string().url().optional(),
 });
 
 const parsed = schema.safeParse({
   supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
   supabasePublishableKey: process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+  supplementsUrl: process.env.EXPO_PUBLIC_SUPPLEMENTS_URL,
 });
 
 const values = parsed.success ? parsed.data : {};
@@ -24,6 +26,11 @@ const values = parsed.success ? parsed.data : {};
 export const config = {
   supabaseUrl: values.supabaseUrl,
   supabasePublishableKey: values.supabasePublishableKey,
+  /**
+   * Tienda de suplementos naturales a la que enlaza el informe de figura.
+   * Es una URL pública, no un secreto. Sin ella el botón no se muestra.
+   */
+  supplementsUrl: values.supplementsUrl,
   /**
    * Sin credenciales la app arranca igualmente en modo demostración con datos
    * locales, para poder abrirla y verla sin configurar nada.

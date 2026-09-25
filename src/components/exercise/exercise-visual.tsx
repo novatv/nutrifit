@@ -2,6 +2,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { View, type ViewStyle } from 'react-native';
 
+import { mediaFor } from '@/data/exercise-media';
 import { getExercise } from '@/domain/training/exerciseLibrary';
 import { useTheme } from '@/providers';
 import type { MovementPattern } from '@/types/domain';
@@ -14,7 +15,8 @@ type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
  * Es deliberado que sea por patrón y no por ejercicio: 146 imágenes distintas
  * salen caras, pesan y nunca quedan iguales entre sí. Once pictogramas
  * coherentes se reconocen al instante y no dependen de red ni de licencias.
- * Cuando un ejercicio traiga `imageUrl`, esa imagen manda sobre el pictograma.
+ * Cuando el ejercicio tiene foto (wger.de, empaquetada en assets) o `imageUrl`,
+ * esa imagen manda sobre el pictograma.
  */
 const PATTERN_ICON: Record<MovementPattern, IconName> = {
   squat: 'weight-lifter',
@@ -52,11 +54,14 @@ export function ExerciseVisual({ slug, size = 96, style }: ExerciseVisualProps) 
     backgroundColor: colors.primarySubtle,
   };
 
-  if (exercise?.imageUrl) {
+  const localImage = mediaFor(slug)?.image;
+  const source = localImage ?? (exercise?.imageUrl ? { uri: exercise.imageUrl } : null);
+
+  if (source) {
     return (
       <View style={[frame, style]} accessible accessibilityRole="image" accessibilityLabel={slug}>
         <Image
-          source={{ uri: exercise.imageUrl }}
+          source={source}
           style={{ width: '100%', height: '100%' }}
           contentFit="cover"
           transition={150}

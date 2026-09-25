@@ -6,6 +6,7 @@ import { Button, Card, Chip, Screen, Section, Text } from '@/components/ui';
 import { AVAILABLE_LOCALES, t } from '@/i18n';
 import { useTheme } from '@/providers';
 import { demoUser } from '@/services/demo-data';
+import { REMINDER_BODY_KEY } from '@/services/notifications';
 import { isDemoMode } from '@/services/supabase';
 import {
   APPEARANCE_OPTIONS,
@@ -128,16 +129,7 @@ export default function ProfileScreen() {
           {REMINDER_KINDS.map((kind) => (
             <SwitchRow
               key={kind}
-              label={t(
-                kind === 'workout'
-                  ? 'notifications.workoutReady'
-                  : kind === 'meal'
-                    ? 'notifications.logDinner'
-                    : kind === 'newWeek'
-                      ? 'notifications.newWeek'
-                      : 'notifications.checkinTime',
-                { n: 1 },
-              )}
+              label={t(REMINDER_BODY_KEY[kind], { n: 1 })}
               value={reminders[kind]}
               onValueChange={(next) => {
                 void setReminder(kind, next);

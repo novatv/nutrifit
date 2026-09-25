@@ -6,32 +6,44 @@ import { logger } from './logger';
 /**
  * Notificaciones locales.
  *
- * Todas son configurables y ninguna insiste: un recordatorio por tipo y día.
- * Nada de rachas manipuladoras ni de avisos que culpabilicen por no registrar.
+ * Todas son configurables y ninguna culpabiliza. Los de agua y moverse se
+ * repiten a horas fijas del día; el resto avisa una vez. Nada de rachas
+ * manipuladoras ni de avisos por no registrar.
  */
 
-export type ReminderKind = 'workout' | 'meal' | 'newWeek' | 'checkin';
+export type ReminderKind =
+  | 'workout'
+  | 'meal'
+  | 'newWeek'
+  | 'checkin'
+  | 'water'
+  | 'move'
+  | 'sleep';
 
-export interface ReminderPreferences {
-  workout: boolean;
-  meal: boolean;
-  newWeek: boolean;
-  checkin: boolean;
-}
+export type ReminderPreferences = Record<ReminderKind, boolean>;
 
 export const defaultReminderPreferences: ReminderPreferences = {
   workout: true,
   meal: false,
   newWeek: true,
   checkin: true,
+  water: true,
+  move: true,
+  sleep: true,
 };
 
-const BODY_KEY: Record<ReminderKind, string> = {
+/** Texto de cada recordatorio. También lo usa la pantalla de ajustes como etiqueta. */
+export const REMINDER_BODY_KEY: Record<ReminderKind, string> = {
   workout: 'notifications.workoutReady',
   meal: 'notifications.logDinner',
   newWeek: 'notifications.newWeek',
   checkin: 'notifications.checkinTime',
+  water: 'notifications.drinkWater',
+  move: 'notifications.moveAround',
+  sleep: 'notifications.bedtime',
 };
+
+const BODY_KEY = REMINDER_BODY_KEY;
 
 export async function requestPermission(): Promise<boolean> {
   const { status } = await Notifications.requestPermissionsAsync();
@@ -45,7 +57,7 @@ export async function scheduleReminder(
 ): Promise<string | null> {
   try {
     return await Notifications.scheduleNotificationAsync({
-      content: { title: 'NutriFit 12', body: t(BODY_KEY[kind], params) },
+      content: { title: 'YL Nutrición', body: t(BODY_KEY[kind], params) },
       trigger,
     });
   } catch (error) {

@@ -154,17 +154,27 @@ function humanize(slug: string): string {
 }
 
 /**
- * Nombre visible de un ejercicio.
+ * Clave i18n del nombre visible de un ejercicio.
  *
- * PENDIENTE i18n: el diccionario todavía no tiene el bloque `exercise.*` que
- * declara la biblioteca (`exercise.<slug_snake>`). Mientras falte, `t()`
- * devolvería la clave en crudo en mitad de la pantalla, así que se compone un
- * nombre legible desde el propio slug. Es un apaño visible y acotado: en
- * cuanto existan las claves, este `if` deja de entrar solo.
+ * `nameKey` (`exercise.<slug_snake>`) es la raíz del bloque del ejercicio en
+ * el diccionario: cuelga `name`, `cue.*`, `mistake.*` y `safety.*`. El nombre
+ * vive en `<nameKey>.name`.
+ */
+export function exerciseNameKey(slugOrExercise: string | Pick<Exercise, 'nameKey'>): string {
+  const base =
+    typeof slugOrExercise === 'string'
+      ? (getExercise(slugOrExercise)?.nameKey ?? `exercise.${slugOrExercise.replace(/-/g, '_')}`)
+      : slugOrExercise.nameKey;
+  return `${base}.name`;
+}
+
+/**
+ * Nombre visible de un ejercicio. Si el slug no está en el diccionario (por
+ * ejemplo un ejercicio retirado que sigue en un histórico), se compone un
+ * nombre legible desde el propio slug en vez de mostrar la clave en crudo.
  */
 export function exerciseLabel(slug: string): string {
-  const exercise = getExercise(slug);
-  const key = exercise?.nameKey ?? `exercise.${slug.replace(/-/g, '_')}`;
+  const key = exerciseNameKey(slug);
   const translated = t(key);
   return translated === key ? humanize(slug) : translated;
 }

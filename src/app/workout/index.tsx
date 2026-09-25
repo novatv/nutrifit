@@ -15,8 +15,9 @@ import {
   Skeleton,
   Text,
 } from '@/components/ui';
+import { ExerciseHowTo } from '@/components/exercise/exercise-how-to';
 import { ExerciseVisual } from '@/components/exercise/exercise-visual';
-import { useWorkoutSession } from '@/features/workout/use-workout-session';
+import { exerciseNameKey, useWorkoutSession } from '@/features/workout/use-workout-session';
 import { t } from '@/i18n';
 import { useTheme } from '@/providers';
 import { isDemoMode } from '@/services/supabase';
@@ -198,6 +199,10 @@ export default function WorkoutScreen() {
           </View>
         </View>
 
+        <View style={{ marginTop: spacing.lg }}>
+          <ExerciseHowTo slug={exercise.exerciseSlug} />
+        </View>
+
         {s.lastTimeSets.length > 0 ? (
           <Section title={t('workout.lastTime')}>
             <Card>
@@ -305,7 +310,7 @@ export default function WorkoutScreen() {
                 s.alternatives.map((alt) => (
                   <Button
                     key={alt.slug}
-                    label={t(alt.nameKey)}
+                    label={t(exerciseNameKey(alt))}
                     variant="secondary"
                     onPress={() => {
                       s.swapExercise(alt.slug);

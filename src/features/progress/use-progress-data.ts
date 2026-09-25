@@ -43,6 +43,7 @@ export const PROGRESS_TABS = [
   'general',
   'weight',
   'measurements',
+  'body',
   'strength',
   'nutrition',
   'activity',

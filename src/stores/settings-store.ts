@@ -13,10 +13,10 @@
  *   preferencia se queda apagada en vez de mentir con un interruptor activo.
  */
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 
+import type { TrainingMode } from '@/domain/training/trainingModes';
 import { setLocale } from '@/i18n';
 import {
   cancelAll,
@@ -27,6 +27,7 @@ import {
   type ReminderPreferences,
 } from '@/services/notifications';
 import { logger } from '@/services/logger';
+import { persistStorage } from '@/stores/safe-storage';
 import type { Locale, UnitSystem } from '@/types/domain';
 import { SchedulableTriggerInputTypes } from 'expo-notifications';
 
@@ -39,14 +40,33 @@ export const APPEARANCE_OPTIONS: AppearancePreference[] = ['system', 'light', 'd
 
 export const UNIT_SYSTEMS: UnitSystem[] = ['metric', 'imperial'];
 
-export const REMINDER_KINDS: ReminderKind[] = ['workout', 'meal', 'newWeek', 'checkin'];
+export const REMINDER_KINDS: ReminderKind[] = [
+  'workout',
+  'meal',
+  'water',
+  'move',
+  'sleep',
+  'newWeek',
+  'checkin',
+];
 
-/** Hora del día de cada recordatorio. Ninguno insiste más de una vez. */
-export const REMINDER_HOURS: Record<ReminderKind, { hour: number; minute: number }> = {
-  workout: { hour: 8, minute: 30 },
-  meal: { hour: 20, minute: 0 },
-  newWeek: { hour: 19, minute: 0 },
-  checkin: { hour: 10, minute: 0 },
+export interface ReminderTime {
+  hour: number;
+  minute: number;
+}
+
+/**
+ * Horas de cada recordatorio. Agua y moverse se reparten por el día en horas
+ * de vigilia; el de dormir avisa con margen para desconectar antes de la cama.
+ */
+export const REMINDER_TIMES: Record<ReminderKind, ReminderTime[]> = {
+  workout: [{ hour: 8, minute: 30 }],
+  meal: [{ hour: 20, minute: 0 }],
+  water: [10, 12, 14, 16, 18, 20].map((hour) => ({ hour, minute: 0 })),
+  move: [11, 13, 15, 17].map((hour) => ({ hour, minute: 30 })),
+  sleep: [{ hour: 22, minute: 30 }],
+  newWeek: [{ hour: 19, minute: 0 }],
+  checkin: [{ hour: 10, minute: 0 }],
 };
 
 export interface SettingsState {
@@ -54,12 +74,15 @@ export interface SettingsState {
   locale: Locale;
   appearance: AppearancePreference;
   reminders: ReminderPreferences;
+  /** Gimnasio, pesas libres o casa: decide qué ejercicios se sirven. */
+  trainingMode: TrainingMode;
   /** true cuando `persist` ya ha leído del almacenamiento. */
   hydrated: boolean;
 
   setUnitSystem: (unitSystem: UnitSystem) => void;
   setAppLocale: (locale: Locale) => void;
   setAppearance: (appearance: AppearancePreference) => void;
+  setTrainingMode: (mode: TrainingMode) => void;
   /** Devuelve el valor que quedó activo: `false` si faltó el permiso. */
   setReminder: (kind: ReminderKind, enabled: boolean) => Promise<boolean>;
   /** Vuelve a programar los recordatorios activos (tras cambiar de idioma). */
@@ -72,28 +95,8 @@ const INITIAL = {
   locale: 'es' as Locale,
   appearance: 'system' as AppearancePreference,
   reminders: { ...defaultReminderPreferences },
+  trainingMode: 'gym' as TrainingMode,
 };
-
-/* ---------------------------------------------------------- almacenamiento */
-
-/**
- * Almacenamiento tolerante al render en servidor.
- *
- * Para web, Expo Router renderiza primero en Node, donde no existe `window`.
- * AsyncStorage lo toca al escribir, así que sin esta guarda el proceso muere
- * con "window is not defined" antes de pintar nada. En ese entorno no hay
- * nada que persistir: se devuelve un almacén vacío y la app arranca con los
- * valores por defecto, que es justo lo que debe pasar en un render de servidor.
- */
-const isBrowserLike = typeof window !== 'undefined';
-
-const noopStorage = {
-  getItem: async (): Promise<string | null> => null,
-  setItem: async (): Promise<void> => {},
-  removeItem: async (): Promise<void> => {},
-};
-
-const safeStorage = isBrowserLike ? AsyncStorage : noopStorage;
 
 /* ------------------------------------------------------------------ store */
 
@@ -114,6 +117,8 @@ export const useSettingsStore = create<SettingsState>()(
       },
 
       setAppearance: (appearance) => set({ appearance }),
+
+      setTrainingMode: (trainingMode) => set({ trainingMode }),
 
       async setReminder(kind, enabled) {
         if (!enabled) {
@@ -139,12 +144,13 @@ export const useSettingsStore = create<SettingsState>()(
           const { reminders } = get();
           for (const kind of REMINDER_KINDS) {
             if (!reminders[kind]) continue;
-            const { hour, minute } = REMINDER_HOURS[kind];
-            await scheduleReminder(
-              kind,
-              { type: SchedulableTriggerInputTypes.DAILY, hour, minute },
-              kind === 'newWeek' ? { n: 1 } : undefined,
-            );
+            for (const { hour, minute } of REMINDER_TIMES[kind]) {
+              await scheduleReminder(
+                kind,
+                { type: SchedulableTriggerInputTypes.DAILY, hour, minute },
+                kind === 'newWeek' ? { n: 1 } : undefined,
+              );
+            }
           }
         } catch (error) {
           logger.error('No se pudieron reprogramar los recordatorios', error);
@@ -155,12 +161,23 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: 'nutrifit.settings',
-      storage: createJSONStorage(() => safeStorage),
+      storage: persistStorage(),
+      merge: (persisted, current) => {
+        const saved = (persisted ?? {}) as Partial<SettingsState>;
+        return {
+          ...current,
+          ...saved,
+          // Ajustes guardados antes de existir un recordatorio no lo traen: se
+          // completa con el valor por defecto en vez de dejarlo indefinido.
+          reminders: { ...defaultReminderPreferences, ...(saved.reminders ?? {}) },
+        };
+      },
       partialize: (state) => ({
         unitSystem: state.unitSystem,
         locale: state.locale,
         appearance: state.appearance,
         reminders: state.reminders,
+        trainingMode: state.trainingMode,
       }),
       onRehydrateStorage: () => (state) => {
         // El idioma guardado tiene que estar activo antes del primer `t()`.
@@ -182,5 +199,6 @@ export const useUnitSystem = (): UnitSystem => useSettingsStore((s) => s.unitSys
 export const useAppLocale = (): Locale => useSettingsStore((s) => s.locale);
 
 export const useAppearance = (): AppearancePreference => useSettingsStore((s) => s.appearance);
+export const useTrainingMode = (): TrainingMode => useSettingsStore((s) => s.trainingMode);
 
 export const useReminders = (): ReminderPreferences => useSettingsStore((s) => s.reminders);
