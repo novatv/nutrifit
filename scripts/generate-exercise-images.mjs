@@ -104,6 +104,11 @@ async function submit(prompt) {
     body: JSON.stringify({ prompt, width: SIZE, height: SIZE }),
   });
   const body = await res.json();
+  // Clave mala: no tiene sentido seguir con las otras 68.
+  if (res.status === 401 || res.status === 403) {
+    console.error(`\nMuAPI rechaza la clave (${res.status}). Revisa MUAPI_API_KEY. No se ha cobrado nada.`);
+    process.exit(1);
+  }
   if (!res.ok || !body.request_id) throw new Error(`submit ${res.status}: ${JSON.stringify(body)}`);
   return body.request_id;
 }
@@ -134,8 +139,8 @@ if (dryRun) {
   for (const ex of targets) console.log(`\n[${ex.slug}] ${promptFor(ex)}`);
   process.exit(0);
 }
-if (!apiKey) {
-  console.error('Falta MUAPI_API_KEY en el entorno. Con --dry-run se ven los prompts sin gastar.');
+if (!apiKey || apiKey === 'pega_aqui_tu_clave') {
+  console.error('Falta MUAPI_API_KEY real en el entorno (muapi.ai → Dashboard → API Keys). Con --dry-run se ven los prompts sin gastar.');
   process.exit(1);
 }
 
