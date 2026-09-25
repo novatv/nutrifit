@@ -30,6 +30,14 @@
         "android.permission.health.READ_RESTING_HEART_RATE",
         "android.permission.health.READ_SLEEP",
         "android.permission.health.READ_STEPS",
+        "android.permission.health.READ_WEIGHT",
+        "android.permission.ACTIVITY_RECOGNITION",
+        "android.permission.health.READ_ACTIVE_CALORIES_BURNED",
+        "android.permission.health.READ_EXERCISE",
+        "android.permission.health.READ_HEART_RATE",
+        "android.permission.health.READ_RESTING_HEART_RATE",
+        "android.permission.health.READ_SLEEP",
+        "android.permission.health.READ_STEPS",
         "android.permission.health.READ_WEIGHT"
       ],
       "package": "es.ylnutricion.app",
@@ -75,6 +83,19 @@
       "typedRoutes": true,
       "reactCompiler": true,
       "baseUrl": "/nutrifit"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a7289862-7128-4e4e-9de6-e2cf475f5683"
+      }
+    },
+    "owner": "casanovapps",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a7289862-7128-4e4e-9de6-e2cf475f5683"
     }
   }
 }
