@@ -36,10 +36,14 @@ export function Input({ label, error, hint, suffix, style, ...rest }: InputProps
           placeholderTextColor={colors.textMuted}
           onFocus={(e) => { setFocused(true); rest.onFocus?.(e); }}
           onBlur={(e) => { setFocused(false); rest.onBlur?.(e); }}
-          style={[typography.body, { flex: 1, color: colors.text, paddingVertical: spacing.sm }, style]}
+          style={[typography.body, { flex: 1, minWidth: 0, color: colors.text, paddingVertical: spacing.sm }, style]}
           {...rest}
         />
-        {suffix ? <Text variant="caption" color="muted">{suffix}</Text> : null}
+        {suffix ? (
+          <Text variant="caption" color="muted" style={{ marginLeft: spacing.xs }}>
+            {suffix}
+          </Text>
+        ) : null}
       </View>
       {error ? <Text variant="caption" color="danger">{error}</Text> : hint ? (
         <Text variant="caption" color="muted">{hint}</Text>
